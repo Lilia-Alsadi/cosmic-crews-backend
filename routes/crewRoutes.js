@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require('../db');
 const { authenticateToken } = require('../middleware/auth');
 
-// Helper to check if user is in crew and their role
 const checkCrewRole = async (userId, crewId) => {
     const res = await db.query('SELECT role FROM crew_members WHERE user_id = $1 AND crew_id = $2', [userId, crewId]);
     return res.rows.length ? res.rows[0].role : null;
