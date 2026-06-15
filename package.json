@@ -13,16 +13,19 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-"type": "module",
-    "bugs": {
+  "bugs": {
     "url": "https://github.com/Lilia-Alsadi/cosmic-crews-backend/issues"
   },
   "homepage": "https://github.com/Lilia-Alsadi/cosmic-crews-backend#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
+    "multer": "^2.2.0",
     "pg": "^8.21.0"
   }
 }
