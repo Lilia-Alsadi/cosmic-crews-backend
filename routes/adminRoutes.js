@@ -4,13 +4,7 @@ const db = require("../db");
 const { authenticateToken, requireAdmin } = require("../middleware/auth");
 
 router.use(authenticateToken);
-router.use((req, res, next) => {
-  if (req.user && (req.user.role === "PLATFORM_ADMIN" || req.user.role === "ADMIN" || req.user.role === "admin")) {
-    next();
-  } else {
-    return res.status(403).json({ message: "Platform Admin privileges required." });
-  }
-});
+router.use(requireAdmin);
 
 router.get("/stats", async (req, res, next) => {
   try {
@@ -106,7 +100,7 @@ router.get("/flagged-items", async (req, res, next) => {
   }
 });
 
-router.delete("/logs/:id", async (req, res, next) => {
+router.delete("/observations/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await db.query("DELETE FROM observations WHERE id = $1 RETURNING id", [id]);
@@ -121,7 +115,7 @@ router.delete("/logs/:id", async (req, res, next) => {
   }
 });
 
-router.put("/logs/:id/dismiss", async (req, res, next) => {
+router.put("/observations/:id/dismiss", async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await db.query("UPDATE observations SET is_flagged = FALSE, flags_count = 0 WHERE id = $1 RETURNING id", [id]);

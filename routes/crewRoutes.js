@@ -224,6 +224,12 @@ router.delete("/:id/members/:userId", authenticateToken, async (req, res, next) 
       }
     }
 
+    const leavingUserRole = await checkCrewRole(userId, id);
+    if (leavingUserRole === "owner") {
+      await db.query(`DELETE FROM crews WHERE id = $1`, [id]);
+      return res.json({ message: "Owner left, crew deleted successfully." });
+    }
+
     await db.query(`DELETE FROM crew_members WHERE crew_id = $1 AND user_id = $2`, [id, userId]);
 
     res.json({ message: "User removed from crew successfully." });
@@ -232,7 +238,7 @@ router.delete("/:id/members/:userId", authenticateToken, async (req, res, next) 
   }
 });
 
-router.get("/:id/logs", authenticateToken, async (req, res, next) => {
+router.get("/:id/observations", authenticateToken, async (req, res, next) => {
   try {
     const { id } = req.params;
 
